@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './SentimentAnalyzer.css';
 
+const API_URL = process.env.REACT_APP_API_URL || '';
+
 function SentimentAnalyzer() {
   const [review, setReview] = useState('');
   const [result, setResult] = useState(null);
@@ -29,7 +31,7 @@ function SentimentAnalyzer() {
 
   // Check if model is ready on load
   useEffect(() => {
-    axios.get('/api/status')
+    axios.get(`${API_URL}/api/status`)
       .then(res => setModelReady(res.data.status === 'ready'))
       .catch(() => setError('Cannot connect to server'));
   }, []);
@@ -38,7 +40,7 @@ function SentimentAnalyzer() {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post('/api/train');
+      const response = await axios.post(`${API_URL}/api/train`);
       setModelReady(true);
       alert(`Model trained successfully!\nAccuracy: ${(response.data.accuracy * 100).toFixed(2)}%`);
     } catch (err) {
@@ -61,7 +63,7 @@ function SentimentAnalyzer() {
     setLoading(true);
     setError(null);
     try {
-      const response = await axios.post('/api/predict', { review });
+      const response = await axios.post(`${API_URL}/api/predict`, { review });
       setResult(response.data);
     } catch (err) {
       setError('Analysis failed: ' + err.message);

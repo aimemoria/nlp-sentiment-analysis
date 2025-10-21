@@ -7,14 +7,13 @@ from bs4 import BeautifulSoup
 import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
-from nltk.stem import WordNetLemmatizer
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 
 # Download NLTK data
-for package in ['stopwords', 'punkt', 'wordnet', 'omw-1.4']:
+for package in ['stopwords', 'punkt']:
     try:
         nltk.download(package, quiet=True)
     except:
@@ -26,7 +25,6 @@ class SentimentModel:
         self.model = None
         self.vectorizer = None
         self.stop_words = set(stopwords.words('english'))
-        self.lemmatizer = WordNetLemmatizer()
 
     def preprocess_text(self, text):
         """Clean and preprocess text"""
@@ -44,7 +42,6 @@ class SentimentModel:
         # Tokenize and clean
         tokens = word_tokenize(text)
         tokens = [word for word in tokens if word not in self.stop_words and len(word) > 2]
-        tokens = [self.lemmatizer.lemmatize(word) for word in tokens]
 
         return ' '.join(tokens)
 
