@@ -13,7 +13,7 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 
 # Download NLTK data
-for package in ['stopwords', 'punkt']:
+for package in ['stopwords', 'punkt', 'punkt_tab']:
     try:
         nltk.download(package, quiet=True)
     except:

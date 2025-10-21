@@ -307,7 +307,10 @@ def train():
         model.save_model(MODEL_FILE)
         return jsonify({'accuracy': accuracy, 'status': 'ready'})
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
+        import traceback
+        error_details = traceback.format_exc()
+        print(f"Training error: {error_details}")
+        return jsonify({'error': str(e), 'details': error_details}), 500
 
 
 @app.route('/api/predict', methods=['POST'])
